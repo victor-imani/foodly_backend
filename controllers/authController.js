@@ -2,6 +2,7 @@ const User = require('../models/User');
 const CryptoJS = require('crypto-js');
 const jwt = require('jsonwebtoken');
 const generateOtp = require('../utils/otp_generator');
+const sendMail = require("../utils/smtp_function");
 
 module.exports = {
     createUser: async (req, res) => {
@@ -37,7 +38,7 @@ module.exports = {
             await newUser.save();
           
             // SEND OTP TO EMAIL
-
+            sendMail(newUser.email, otp);
 
             res.status(201).json( {status: true, message: "User successfully created"});
         }

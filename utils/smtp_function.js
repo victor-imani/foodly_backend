@@ -6,7 +6,8 @@ async function sendEmail(userEmail, message) {
         auth: {
             user: process.env.AUTH_EMAIL,
             pass: process.env.AUTH_PASSWORD,
-        }
+        },
+        debug: true
     });
 
     const mailOptions = {
