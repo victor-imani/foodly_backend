@@ -5,9 +5,9 @@ const UserSchema = new mongoose.Schema({
     email: {type: String, required: true, unique: true},
     otp: {type: String, required: false, default: 'none'},
     password: {type: String, required: true},
-    verification: {type: Boolean, required: false},
+    verification: {type: Boolean, default: false},
     phone: {type: String, default: "012345678"},
-    phoneVerification: {type: String, required: true},
+    phoneVerification: {type: Boolean, default: false},
     address: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Address",

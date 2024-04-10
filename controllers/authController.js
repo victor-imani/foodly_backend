@@ -8,14 +8,14 @@ module.exports = {
     createUser: async (req, res) => {
         const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-        if(!emailRegex,test(req.body.email)) {
+        if(!emailRegex.test(req.body.email)) {
             return res.status(400).json( {status: false, message: "Invalid Email"});
         }
 
         const minPasswordLength = 8;
         
         if (req.body.password < minPasswordLength) {
-            return res.status(400).json( {status: false, message: "Passwod should be at least " + minPasswordLength + "characters long"});
+            return res.status(400).json( {status: false, message: "Password should be at least " + minPasswordLength + "characters long"});
         }
 
         try{
@@ -50,14 +50,14 @@ module.exports = {
     loginUser : async (req, res) => {
         const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-        if(!emailRegex,test(req.body.email)) {
+        if(!emailRegex.test(req.body.email)) {
             return res.status(400).json( {status: false, message: "Invalid Email"});
         }
 
         const minPasswordLength = 8;
         
         if (req.body.password < minPasswordLength) {
-            return res.status(400).json( {status: false, message: "Passwod should be at least " + minPasswordLength + "characters long"});
+            return res.status(400).json( {status: false, message: "Password should be at least " + minPasswordLength + "characters long"});
         }
 
         try {
@@ -67,7 +67,7 @@ module.exports = {
             //     return res.status(400).json({status: false, message: "User not found"});
             // }
 
-            const decryptedPassword = CryptoJS.decrypt(user.password, process.env.SECRET);
+            const decryptedPassword = CryptoJS.AES.decrypt(user.password, process.env.SECRET);
             const depassword = decryptedPassword.toString(CryptoJS.enc.Utf8);
 
             if(depassword !== req.body.password || !user) {
@@ -80,7 +80,7 @@ module.exports = {
                 email: user.email,
             }, process.env.JWT_SECRET, {expiresIn: "21d"});
 
-            const { password, otp, ...others} = user.doc;
+            const { password, createdAt, updatedAt, __v, otp, ...others} = user._doc;
 
             res.status(200).json({...others, userToken});
 

@@ -28,7 +28,7 @@ module.exports = {
 
                 await user.save();
 
-                const { password, __v, otp, createdAt, ...other } = user._doc;
+                const { password, __v, otp, createdAt, ...others } = user._doc;
                 return res.status(200).json({...others});
             }
             else {
@@ -53,7 +53,7 @@ module.exports = {
 
             await user.save();
 
-            const { password, __v, otp, createdAt, ...other } = user._doc;
+            const { password, __v, otp, createdAt, ...others } = user._doc;
             return res.status(200).json({...others});
         }
         catch(error) {
